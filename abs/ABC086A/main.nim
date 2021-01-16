@@ -1,4 +1,4 @@
-import sequtils, tables
+import sequtils
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld",addr result)
@@ -16,28 +16,15 @@ proc nextString(): string =
       get = false
 
 
-proc solve(X:int, Y:int):void =
-    var memo: Table[int, int]
-
-    proc dp(y: int): int =
-      if memo.hasKey(y): return memo[y]
-
-      result = if y == 1: abs(X-y)
-        elif (y and 1) == 1:
-          [abs(X-y), dp((y+1) div 2) + 2, dp((y-1) div 2) + 2].min
-        else: [abs(X-y), dp(y div 2) + 1].min
-
-      memo[y] = result
-
-    echo dp(Y)
-
+proc solve(a:int, b:int):void =
+  echo if (a * b and 1) == 0: "Even" else: "Odd"
 
 proc main():void =
-  var X = 0
-  X = nextInt()
-  var Y = 0
-  Y = nextInt()
-  solve(X, Y);
+  var a = 0
+  a = nextInt()
+  var b = 0
+  b = nextInt()
+  solve(a, b);
   return
 
 main()

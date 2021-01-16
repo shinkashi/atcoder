@@ -1,4 +1,4 @@
-import sequtils, tables
+import sequtils, algorithm
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld",addr result)
@@ -16,28 +16,21 @@ proc nextString(): string =
       get = false
 
 
-proc solve(X:int, Y:int):void =
-    var memo: Table[int, int]
-
-    proc dp(y: int): int =
-      if memo.hasKey(y): return memo[y]
-
-      result = if y == 1: abs(X-y)
-        elif (y and 1) == 1:
-          [abs(X-y), dp((y+1) div 2) + 2, dp((y-1) div 2) + 2].min
-        else: [abs(X-y), dp(y div 2) + 1].min
-
-      memo[y] = result
-
-    echo dp(Y)
-
+proc solve(N:int, a: var seq[int]):void =
+  var Alice = 0
+  var Bob = 0
+  a.sort(SortOrder.Descending)
+  for i in countup(0, a.len-1, 2):  Alice += a[i]
+  for i in countup(1, a.len-1, 2):  Bob += a[i]
+  echo Alice - Bob
 
 proc main():void =
-  var X = 0
-  X = nextInt()
-  var Y = 0
-  Y = nextInt()
-  solve(X, Y);
+  var N = 0
+  N = nextInt()
+  var a = newSeqWith(N, 0)
+  for i in 0..<N:
+      a[i] = nextInt()
+  solve(N, a);
   return
 
 main()

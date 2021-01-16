@@ -1,4 +1,4 @@
-import sequtils, tables
+import sequtils
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld",addr result)
@@ -16,28 +16,27 @@ proc nextString(): string =
       get = false
 
 
-proc solve(X:int, Y:int):void =
-    var memo: Table[int, int]
+proc solve(A:int, B:int, C:int, X:int):void =
+  var cnt = 0
+  for a in 0..A:
+    for b in 0..B:
+      var remaining = X - (500*a + 100*b)
+      var c = remaining div 50
+      if c in 0..C: inc cnt
+  echo cnt
 
-    proc dp(y: int): int =
-      if memo.hasKey(y): return memo[y]
-
-      result = if y == 1: abs(X-y)
-        elif (y and 1) == 1:
-          [abs(X-y), dp((y+1) div 2) + 2, dp((y-1) div 2) + 2].min
-        else: [abs(X-y), dp(y div 2) + 1].min
-
-      memo[y] = result
-
-    echo dp(Y)
 
 
 proc main():void =
+  var A = 0
+  A = nextInt()
+  var B = 0
+  B = nextInt()
+  var C = 0
+  C = nextInt()
   var X = 0
   X = nextInt()
-  var Y = 0
-  Y = nextInt()
-  solve(X, Y);
+  solve(A, B, C, X);
   return
 
 main()

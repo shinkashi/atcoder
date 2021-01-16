@@ -1,4 +1,4 @@
-import sequtils, tables
+import sequtils, strutils
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld",addr result)
@@ -15,29 +15,28 @@ proc nextString(): string =
       if get: break
       get = false
 
+let YES = "YES"
+let NO = "NO"
 
-proc solve(X:int, Y:int):void =
-    var memo: Table[int, int]
+proc solve(S:var string):void =
+  while S.len > 0:
+    block hoge:
+      for c in ["dream","dreamer","erase","eraser"]:
+        if S.endsWith(c):
+          # S = S.substr(0, S.len - 1 - c.len)
+          S.removeSuffix(c)
+          break hoge
+      echo NO
+      return
 
-    proc dp(y: int): int =
-      if memo.hasKey(y): return memo[y]
-
-      result = if y == 1: abs(X-y)
-        elif (y and 1) == 1:
-          [abs(X-y), dp((y+1) div 2) + 2, dp((y-1) div 2) + 2].min
-        else: [abs(X-y), dp(y div 2) + 1].min
-
-      memo[y] = result
-
-    echo dp(Y)
+  echo YES
+  return
 
 
 proc main():void =
-  var X = 0
-  X = nextInt()
-  var Y = 0
-  Y = nextInt()
-  solve(X, Y);
+  var S = ""
+  S = nextString()
+  solve(S);
   return
 
 main()
