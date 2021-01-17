@@ -1,4 +1,4 @@
-import sequtils
+import sequtils, tables, sugar, algorithm
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld",addr result)
@@ -17,18 +17,33 @@ proc nextString(): string =
 
 
 proc solve(N:int, K:int, a:var seq[int]):void =
-  var total = 0
+  var f: CountTable[int]
+  var amax = 0
 
-  while true:
-    var j = 0
-    while a.contains(j):
-      var idx = a.find(j)
-      a.delete(idx, idx)
-      inc j
-    if j == 0: break    
-    total += j
+  for ai in a: 
+    f.inc(ai)
+    amax = max(amax, ai)
 
-  echo total
+  var cnt = 0
+  var balls = K
+  
+  for i in 0..amax:
+    balls = min(balls, f[i])
+    if balls == 0: break
+    cnt += balls
+
+  echo cnt
+
+  # var fkeys = toSeq(f.keys).sorted
+  # var prev = fkeys[0]
+  # var balls = f[0]
+
+  # for i in fkeys:
+    # # dump((i, prev, balls, cnt))
+    # cnt += (i - prev) * balls
+    # balls = min(balls, f[i])
+    # prev = i
+
 
 proc main():void =
   var N = 0
