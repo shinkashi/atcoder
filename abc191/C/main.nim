@@ -18,11 +18,14 @@ proc nextString(): string =
 proc solve(H, W: int, S: seq[seq[char]]) = 
   var cnt =0
 
-  for h in 0..<H:
-    for w in 0..<W:
-      if S[h][w] == '#':
-        if S[h][w-1] != S[h][w+1] and S[h-1][w] != S[h+1][w]:
-          cnt += 1
+  for h in 0..<H-1:
+    for w in 0..<W-1:
+        var vicinity = 0
+        if S[h][w] == '#': inc vicinity
+        if S[h][w+1] == '#': inc vicinity
+        if S[h+1][w] == '#': inc vicinity
+        if S[h+1][w+1] == '#': inc vicinity
+        if vicinity in [1, 3]: inc cnt
 
   echo cnt
 

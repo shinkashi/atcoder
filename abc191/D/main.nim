@@ -15,7 +15,18 @@ proc nextString(): string =
       if get: break
       get = false
 
-var FACTOR = 10000.0
+const FACTOR = 10000
+
+proc floorf(x: int): int =
+  result = (x div FACTOR)
+  if result < 0:
+    result -= 1
+  result *= FACTOR
+
+proc ceilf(x: int): int =
+  result = floorf(x)
+  if x mod FACTOR > 0:
+    result += FACTOR
 
 proc solve(X:float, Y:float, R:float):void =
   if R < 0.0001:
@@ -27,25 +38,25 @@ proc solve(X:float, Y:float, R:float):void =
   var r = (R * FACTOR).round.int
 
   var 
-    ylow = int(ceil((y - r).toFloat / FACTOR) * FACTOR)
-    yhigh = int(floor((y + r).toFloat / FACTOR) * FACTOR)
+    ylow = ceilf(y - r)
+    yhigh = floorf(y + r)
     q = ylow
     cnt = 0
 
-  # dump (ylow, yhigh)
+  # dump((ylow, yhigh))
 
   while q <= yhigh:
     # var pp = sqrt(R2 - pow(Y - q, 2))
     var pp = (r + (y - q)) * (r - (y - q))
-    var ppf = sqrt(pp.float).round
+    var ppf = sqrt(pp.float).int
 
-    var xlow = int(ceil((float(x) - ppf) / FACTOR) * FACTOR)
-    var xhigh = int(floor((float(x) + ppf) / FACTOR) * FACTOR)
+    var xlow = ceilf(x - ppf)
+    var xhigh = floorf(x + ppf)
 
     # dump (xlow, xhigh)
 
     if xlow <= xhigh:
-      cnt += 1 + ((xhigh - xlow) div (FACTOR.toInt))
+      cnt += 1 + ((xhigh - xlow) div FACTOR)
     q += FACTOR.toInt
 
   echo cnt
