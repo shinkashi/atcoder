@@ -17,29 +17,18 @@ proc nextString(): string =
 
 const FACTOR = 10000
 
-proc floorf(x: int): int =
-  result = (x div FACTOR)
-  if result < 0:
-    result -= 1
-  result *= FACTOR
-
-proc ceilf(x: int): int =
-  result = floorf(x)
-  if x mod FACTOR > 0:
-    result += FACTOR
-
 proc solve(X:float, Y:float, R:float):void =
   if R < 0.0001:
     echo 0
     return
 
-  var x = (X * FACTOR).round.int
-  var y = (Y * FACTOR).round.int
-  var r = (R * FACTOR).round.int
-
   var 
-    ylow = ceilf(y - r)
-    yhigh = floorf(y + r)
+    x = X.float64
+    y = Y.float64
+    r = R.float64
+
+    ylow = ceil(y - r)
+    yhigh = floor(y + r)
     q = ylow
     cnt = 0
 
@@ -48,16 +37,17 @@ proc solve(X:float, Y:float, R:float):void =
   while q <= yhigh:
     # var pp = sqrt(R2 - pow(Y - q, 2))
     var pp = (r + (y - q)) * (r - (y - q))
-    var ppf = sqrt(pp.float).int
+    var ppf = sqrt(pp)
 
-    var xlow = ceilf(x - ppf)
-    var xhigh = floorf(x + ppf)
+    var xlow = ceil(x - ppf)
+    var xhigh = floor(x + ppf)
 
     # dump (xlow, xhigh)
 
     if xlow <= xhigh:
-      cnt += 1 + ((xhigh - xlow) div FACTOR)
-    q += FACTOR.toInt
+      cnt += (xhigh - xlow).int + 1
+
+    q += 1
 
   echo cnt
 
