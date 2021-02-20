@@ -1,4 +1,4 @@
-import sequtils, math
+import sequtils
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld", addr result)
@@ -15,20 +15,21 @@ proc nextString(): string =
       if get: break
       get = false
 
+let YES = "Yes"
+let NO = "No"
 
-proc solve(B: int, C: int): void =
-  discard A+b
+proc solve(S: string): void =
+  for i in 0..<S.len:
+    if (i mod 2 == 0 and S[i] in {'A'..'Z'}) or (i mod 2 == 1 and S[i] in {'a'..'z'}):
+      echo NO
+      return
 
-  discard "all"
-
-
+  echo YES
 
 proc main(): void =
-  var B = 0
-  B = nextInt()
-  var C = 0
-  C = nextInt()
-  solve(B, C);
+  var S = ""
+  S = nextString()
+  solve(S);
   return
 
 main()

@@ -1,4 +1,4 @@
-import sequtils, math
+import sequtils
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld", addr result)
@@ -16,19 +16,13 @@ proc nextString(): string =
       get = false
 
 
-proc solve(B: int, C: int): void =
-  discard A+b
-
-  discard "all"
-
-
+proc solve(X: int): void =
+  echo 100 - (X mod 100)
 
 proc main(): void =
-  var B = 0
-  B = nextInt()
-  var C = 0
-  C = nextInt()
-  solve(B, C);
+  var X = 0
+  X = nextInt()
+  solve(X);
   return
 
 main()

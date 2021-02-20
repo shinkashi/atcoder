@@ -1,8 +1,8 @@
-import sequtils, math
+import sequtils
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 proc getchar(): char {.header: "<stdio.h>", varargs.}
-proc nextInt(): int = scanf("%lld", addr result)
-proc nextFloat(): float = scanf("%lf", addr result)
+proc nextInt(): int = scanf("%lld",addr result)
+proc nextFloat(): float = scanf("%lf",addr result)
 proc nextString(): string =
   var get = false
   result = ""
@@ -16,19 +16,18 @@ proc nextString(): string =
       get = false
 
 
-proc solve(B: int, C: int): void =
-  discard A+b
+proc solve(N:int, X:int, A:seq[int]):void =
+  discard
 
-  discard "all"
-
-
-
-proc main(): void =
-  var B = 0
-  B = nextInt()
-  var C = 0
-  C = nextInt()
-  solve(B, C);
+proc main():void =
+  var N = 0
+  N = nextInt()
+  var X = 0
+  X = nextInt()
+  var A = newSeqWith(N, 0)
+  for i in 0..<N:
+    A[i] = nextInt()
+  solve(N, X, A);
   return
 
 main()
