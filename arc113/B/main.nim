@@ -15,24 +15,26 @@ proc nextString(): string =
       if get: break
       get = false
 
-var mods: array[0..9, seq[int]]
+const MODSIZE = 40
+
+var mods: array[MODSIZE, seq[int]]
 
 proc createMods =
   mods[0] = @[0]
-  for i in 1..9:
+  for i in 1..<MODSIZE-1:
     var x = i
     while x notin mods[i]:
       mods[i].add(x)
-      x = (x * i) mod 10
-  dump mods
-  dump mods.map(series => series.map(x => x mod 4))
-
+      x = (x * i) mod MODSIZE
+  # dump mods
 
 proc powLastDigit(X, Y: int): int =
-  var x = X mod 10
+  var x = X mod MODSIZE
+  var y = Y
   if x == 0: return 0
-  if Y == 0: return 1
-  var steps = (Y - 1) mod (mods[x].len)
+  if y == 0:
+    y = mods[x].len
+  var steps = (y-1) mod (mods[x].len)
   # if steps == 0: return 1
   # steps -= 1
   # dump (X, Y, x, mods[x], steps)
@@ -40,12 +42,9 @@ proc powLastDigit(X, Y: int): int =
 
 
 proc solve(A: int, B: int, C: int): void =
-  var BC = 1
-  for i in 0..C mod 30:
-    BC = (BC * B) mod 30
-  # var BC = B ^ (C mod 4)
+  var BC = powLastDigit(B, C)
   var ABC = powLastDigit(A, BC)
-  echo ABC
+  echo ABC mod 10
 
 
 proc main(): void =
