@@ -1,4 +1,4 @@
-import sequtils, tables
+import sequtils, tables, math
 proc scanf(formatstr: cstring){.header: "<stdio.h>", varargs.}
 # proc getchar(): char {.header: "<stdio.h>", varargs.}
 proc nextInt(): int = scanf("%lld", addr result)
@@ -17,19 +17,13 @@ proc nextInt(): int = scanf("%lld", addr result)
 
 
 proc solve(N: int, A: seq[int]): void =
-  var t: Table[int, int]
-  # var s: HashSet[int]
+  var t = initTable[int, int](2^20)
   for a in A:
-    if not t.hasKey(a):
-      t[a] = 0
-    inc t[a]
-    # if t[a] >= 2:
-    #   s.incl(a)
+    t.mgetOrPut(a, 0).inc
 
   var total = N * (N-1) div 2
 
   for dup in t.values:
-    # var dup = t[k]
     total -= dup * (dup-1) div 2
 
   echo total
